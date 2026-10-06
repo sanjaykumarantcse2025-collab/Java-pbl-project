@@ -1,0 +1,2401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Secure Office VPN</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --bg: #07111f;
+    --panel: #0d1b2e;
+    --panel2: #11243b;
+    --blue: #38bdf8;
+    --blue2: #2563eb;
+    --green: #22c55e;
+    --red: #ef4444;
+    --yellow: #f59e0b;
+    --text: #e8f1ff;
+    --muted: #91a4bd;
+    --border: rgba(148,163,184,.16);
+}
+
+body {
+    font-family: Inter, Arial, sans-serif;
+    background:
+        radial-gradient(circle at 10% 10%, rgba(37,99,235,.18), transparent 30%),
+        radial-gradient(circle at 90% 20%, rgba(14,165,233,.12), transparent 30%),
+        var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+}
+
+button, input, select {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* LOGIN */
+
+.login-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+}
+
+.login-container {
+    width: min(1100px, 100%);
+    display: grid;
+    grid-template-columns: 1.1fr .9fr;
+    background: rgba(13,27,46,.92);
+    border: 1px solid var(--border);
+    border-radius: 25px;
+    overflow: hidden;
+    box-shadow: 0 30px 100px rgba(0,0,0,.45);
+}
+
+.login-brand {
+    padding: 55px;
+    background:
+        linear-gradient(135deg, rgba(37,99,235,.2), transparent),
+        #09192d;
+    position: relative;
+    overflow: hidden;
+}
+
+.login-brand:after {
+    content: "SECURE";
+    position: absolute;
+    font-size: 150px;
+    font-weight: 900;
+    color: rgba(255,255,255,.025);
+    bottom: -20px;
+    left: -20px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 50px;
+}
+
+.logo-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 15px;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(135deg,#2563eb,#06b6d4);
+    font-size: 25px;
+}
+
+.logo h1 {
+    font-size: 20px;
+}
+
+.logo span {
+    color: var(--blue);
+}
+
+.brand-title {
+    font-size: 48px;
+    line-height: 1.05;
+    margin-bottom: 22px;
+}
+
+.brand-description {
+    color: var(--muted);
+    line-height: 1.8;
+    max-width: 550px;
+}
+
+.security-list {
+    margin-top: 35px;
+    display: grid;
+    gap: 13px;
+}
+
+.security-item {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    color: #cbd8e8;
+}
+
+.security-item b {
+    color: var(--green);
+}
+
+.login-box {
+    padding: 50px;
+    background: rgba(8,19,33,.8);
+}
+
+.login-box h2 {
+    font-size: 30px;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    color: var(--muted);
+    margin-bottom: 30px;
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 13px;
+    color: #b7c6d9;
+    margin-bottom: 8px;
+}
+
+.input {
+    width: 100%;
+    padding: 14px 15px;
+    border: 1px solid var(--border);
+    background: #09182a;
+    color: white;
+    border-radius: 10px;
+    outline: none;
+}
+
+.input:focus {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(56,189,248,.1);
+}
+
+.primary-btn {
+    width: 100%;
+    border: 0;
+    padding: 14px;
+    border-radius: 10px;
+    color: white;
+    font-weight: 700;
+    background: linear-gradient(135deg,#2563eb,#0891b2);
+    margin-top: 8px;
+}
+
+.primary-btn:hover {
+    filter: brightness(1.1);
+}
+
+.demo-box {
+    margin-top: 22px;
+    padding: 14px;
+    border: 1px dashed rgba(56,189,248,.3);
+    background: rgba(56,189,248,.05);
+    border-radius: 10px;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.7;
+}
+
+.message {
+    margin-top: 15px;
+    padding: 11px;
+    border-radius: 8px;
+    font-size: 13px;
+}
+
+.message.error {
+    color: #fecaca;
+    background: rgba(239,68,68,.1);
+    border: 1px solid rgba(239,68,68,.25);
+}
+
+.message.success {
+    color: #bbf7d0;
+    background: rgba(34,197,94,.1);
+    border: 1px solid rgba(34,197,94,.25);
+}
+
+/* OTP */
+
+.otp-screen {
+    text-align: center;
+}
+
+.otp-screen h2 {
+    margin-bottom: 10px;
+}
+
+.otp-code {
+    font-size: 40px;
+    letter-spacing: 10px;
+    color: var(--blue);
+    font-weight: 900;
+    margin: 25px 0;
+}
+
+.security-checks {
+    text-align: left;
+    margin: 20px 0;
+}
+
+.check {
+    padding: 10px;
+    margin-bottom: 8px;
+    background: rgba(255,255,255,.03);
+    border-radius: 8px;
+}
+
+.check.ok {
+    color: #86efac;
+}
+
+/* APP */
+
+.app {
+    min-height: 100vh;
+    display: flex;
+}
+
+.sidebar {
+    width: 260px;
+    background: #071525;
+    border-right: 1px solid var(--border);
+    padding: 25px 15px;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+}
+
+.sidebar-logo {
+    padding: 5px 12px 25px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 20px;
+}
+
+.sidebar-logo strong {
+    color: var(--blue);
+}
+
+.nav-item {
+    width: 100%;
+    text-align: left;
+    border: 0;
+    background: transparent;
+    color: #93a6bd;
+    padding: 13px;
+    border-radius: 9px;
+    margin-bottom: 5px;
+}
+
+.nav-item:hover,
+.nav-item.active {
+    background: rgba(56,189,248,.09);
+    color: white;
+}
+
+.nav-section {
+    font-size: 10px;
+    text-transform: uppercase;
+    color: #51657c;
+    margin: 20px 12px 8px;
+    letter-spacing: 1.5px;
+}
+
+.main {
+    margin-left: 260px;
+    width: calc(100% - 260px);
+}
+
+.topbar {
+    height: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 30px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(7,17,31,.8);
+    backdrop-filter: blur(12px);
+}
+
+.connection {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    color: #86efac;
+    font-size: 13px;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    background: var(--green);
+    border-radius: 50%;
+    box-shadow: 0 0 12px var(--green);
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(135deg,#2563eb,#06b6d4);
+    font-weight: 800;
+}
+
+.content {
+    padding: 30px;
+    max-width: 1500px;
+    margin: auto;
+}
+
+.page-title {
+    margin-bottom: 7px;
+    font-size: 30px;
+}
+
+.page-subtitle {
+    color: var(--muted);
+    margin-bottom: 28px;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 16px;
+    margin-bottom: 22px;
+}
+
+.stat {
+    background: rgba(13,27,46,.8);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+}
+
+.stat-label {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.stat-value {
+    font-size: 30px;
+    font-weight: 800;
+    margin-top: 7px;
+}
+
+.card {
+    background: rgba(13,27,46,.8);
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    padding: 22px;
+    margin-bottom: 20px;
+}
+
+.card-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+}
+
+.card-title h3 {
+    font-size: 17px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 20px;
+}
+
+.activity {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 13px 0;
+    border-bottom: 1px solid rgba(148,163,184,.08);
+}
+
+.activity:last-child {
+    border-bottom: 0;
+}
+
+.activity-left {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.activity-icon {
+    width: 35px;
+    height: 35px;
+    border-radius: 9px;
+    display: grid;
+    place-items: center;
+    background: rgba(56,189,248,.08);
+}
+
+.badge {
+    padding: 5px 9px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.badge.green {
+    background: rgba(34,197,94,.12);
+    color: #86efac;
+}
+
+.badge.red {
+    background: rgba(239,68,68,.12);
+    color: #fca5a5;
+}
+
+.badge.blue {
+    background: rgba(56,189,248,.12);
+    color: #7dd3fc;
+}
+
+.badge.yellow {
+    background: rgba(245,158,11,.12);
+    color: #fcd34d;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    color: #70859e;
+    font-size: 11px;
+    text-transform: uppercase;
+    text-align: left;
+    padding: 11px;
+    border-bottom: 1px solid var(--border);
+}
+
+td {
+    padding: 13px 11px;
+    border-bottom: 1px solid rgba(148,163,184,.07);
+    font-size: 13px;
+}
+
+.resource-grid {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 15px;
+}
+
+.resource {
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,.025);
+    border-radius: 12px;
+    padding: 18px;
+    transition: .2s;
+}
+
+.resource:hover {
+    border-color: rgba(56,189,248,.4);
+    transform: translateY(-2px);
+}
+
+.resource h4 {
+    margin-bottom: 8px;
+}
+
+.resource p {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.resource button {
+    margin-top: 15px;
+    padding: 8px 12px;
+    background: rgba(56,189,248,.1);
+    border: 1px solid rgba(56,189,248,.2);
+    color: #7dd3fc;
+    border-radius: 7px;
+}
+
+.encryption-box {
+    background: #06101d;
+    border: 1px solid var(--border);
+    padding: 18px;
+    border-radius: 10px;
+}
+
+.data-label {
+    font-size: 11px;
+    color: #71859c;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+}
+
+.data-value {
+    word-break: break-all;
+    background: #0a1727;
+    padding: 12px;
+    border-radius: 7px;
+    font-family: monospace;
+    font-size: 12px;
+    margin-bottom: 15px;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Architecture */
+
+.architecture {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 7px;
+}
+
+.arch-box {
+    padding: 14px 12px;
+    background: rgba(37,99,235,.1);
+    border: 1px solid rgba(56,189,248,.2);
+    border-radius: 10px;
+    text-align: center;
+    font-size: 11px;
+}
+
+.arrow {
+    color: var(--blue);
+    font-size: 18px;
+}
+
+/* Security status */
+
+.status-list {
+    display: grid;
+    gap: 10px;
+}
+
+.status-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px;
+    background: rgba(255,255,255,.025);
+    border-radius: 8px;
+}
+
+.logout {
+    color: #fca5a5 !important;
+}
+
+/* Responsive */
+
+@media(max-width:900px) {
+    .login-container {
+        grid-template-columns: 1fr;
+    }
+
+    .login-brand {
+        display: none;
+    }
+
+    .sidebar {
+        width: 70px;
+    }
+
+    .sidebar .nav-item span,
+    .sidebar .nav-section,
+    .sidebar-logo strong {
+        display: none;
+    }
+
+    .main {
+        margin-left: 70px;
+        width: calc(100% - 70px);
+    }
+
+    .stats {
+        grid-template-columns: repeat(2,1fr);
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .resource-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media(max-width:600px) {
+    .content {
+        padding: 18px;
+    }
+
+    .stats {
+        grid-template-columns: 1fr;
+    }
+
+    .login-box {
+        padding: 30px;
+    }
+
+    .topbar {
+        padding: 0 15px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ============================================================
+     LOGIN
+============================================================ -->
+
+<section id="loginPage" class="login-page">
+
+<div class="login-container">
+
+<div class="login-brand">
+
+<div class="logo">
+<div class="logo-icon">🔐</div>
+<h1>SECURE <span>OFFICE VPN</span></h1>
+</div>
+
+<h2 class="brand-title">
+Secure Remote<br>
+Office Access
+</h2>
+
+<p class="brand-description">
+A Java-based academic VPN-style secure remote-access application
+demonstrating authentication, encryption, role-based access control,
+device verification, session management and audit logging.
+</p>
+
+<div class="security-list">
+
+<div class="security-item">
+<b>✓</b> AES-256 authenticated encryption
+</div>
+
+<div class="security-item">
+<b>✓</b> Two-factor authentication
+</div>
+
+<div class="security-item">
+<b>✓</b> Device verification
+</div>
+
+<div class="security-item">
+<b>✓</b> Role-based access control
+</div>
+
+<div class="security-item">
+<b>✓</b> Session & activity monitoring
+</div>
+
+</div>
+
+</div>
+
+<div class="login-box">
+
+<div id="credentialsPanel">
+
+<h2>Welcome Back</h2>
+<p class="subtitle">Authenticate to your secure office network.</p>
+
+<div class="form-group">
+<label>USERNAME</label>
+<input id="username" class="input" placeholder="Enter username">
+</div>
+
+<div class="form-group">
+<label>PASSWORD</label>
+<input id="password" type="password" class="input" placeholder="Enter password">
+</div>
+
+<button class="primary-btn" onclick="startAuthentication()">
+Continue Secure Login →
+</button>
+
+<div id="loginMessage"></div>
+
+<div class="demo-box">
+<b>Presentation Demo Accounts</b><br>
+ADMIN → admin / Admin@123<br>
+EMPLOYEE → sanjay / Sanjay@123
+</div>
+
+</div>
+
+<!-- OTP -->
+
+<div id="otpPanel" class="hidden otp-screen">
+
+<h2>Two-Factor Authentication</h2>
+
+<p class="subtitle">
+A temporary verification code has been generated for this session.
+</p>
+
+<div class="otp-code" id="generatedOtp">------</div>
+
+<p style="color:#91a4bd;font-size:13px;">
+Demo OTP — normally delivered through an external 2FA channel.
+</p>
+
+<div class="form-group" style="text-align:left;margin-top:25px;">
+<label>ENTER OTP</label>
+<input id="otpInput" maxlength="6" class="input"
+placeholder="6-digit OTP">
+</div>
+
+<div class="security-checks">
+
+<div class="check ok">✓ Password verified</div>
+<div class="check" id="otpCheck">○ OTP verification pending</div>
+<div class="check" id="deviceCheck">○ Device verification pending</div>
+
+</div>
+
+<button class="primary-btn" onclick="verifyOTP()">
+Verify & Establish Secure Session
+</button>
+
+<div id="otpMessage"></div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ============================================================
+     APPLICATION
+============================================================ -->
+
+<section id="app" class="app hidden">
+
+<aside class="sidebar">
+
+<div class="sidebar-logo">
+🔐 <strong>SECURE VPN</strong>
+</div>
+
+<div class="nav-section">Workspace</div>
+
+<button class="nav-item active" onclick="showPage('dashboard',this)">
+🏠 <span>Dashboard</span>
+</button>
+
+<button class="nav-item" onclick="showPage('resources',this)">
+📁 <span>Office Resources</span>
+</button>
+
+<button class="nav-item" onclick="showPage('encryption',this)">
+🔒 <span>Secure Data</span>
+</button>
+
+<button class="nav-item" onclick="showPage('session',this)">
+🕒 <span>My Session</span>
+</button>
+
+<div id="adminNavigation">
+
+<div class="nav-section">Administration</div>
+
+<button class="nav-item" onclick="showPage('users',this)">
+👥 <span>Users</span>
+</button>
+
+<button class="nav-item" onclick="showPage('sessions',this)">
+🟢 <span>Active Sessions</span>
+</button>
+
+<button class="nav-item" onclick="showPage('logs',this)">
+📋 <span>Activity Logs</span>
+</button>
+
+<button class="nav-item" onclick="showPage('security',this)">
+🛡 <span>Security Events</span>
+</button>
+
+</div>
+
+<div class="nav-section">System</div>
+
+<button class="nav-item" onclick="showPage('architecture',this)">
+⚙ <span>Architecture</span>
+</button>
+
+<button class="nav-item logout" onclick="logout()">
+↪ <span>Logout</span>
+</button>
+
+</aside>
+
+
+<main class="main">
+
+<header class="topbar">
+
+<div class="connection">
+<div class="dot"></div>
+VPN-STYLE CONNECTION SECURE
+</div>
+
+<div class="profile">
+<div>
+<div id="topUsername" style="font-size:13px;font-weight:bold;">User</div>
+<div id="topRole" style="font-size:10px;color:#71859c;">EMPLOYEE</div>
+</div>
+<div class="avatar" id="avatar">S</div>
+</div>
+
+</header>
+
+
+<div class="content">
+
+
+<!-- DASHBOARD -->
+
+<div id="page-dashboard" class="page">
+
+<h1 class="page-title" id="welcomeTitle">
+Security Dashboard
+</h1>
+
+<p class="page-subtitle">
+Monitor your secure remote-access session and security status.
+</p>
+
+<div class="stats">
+
+<div class="stat">
+<div class="stat-label">VPN STATUS</div>
+<div class="stat-value" style="color:#4ade80;">●</div>
+<div style="font-size:11px;color:#91a4bd;">CONNECTED</div>
+</div>
+
+<div class="stat">
+<div class="stat-label">SESSION</div>
+<div class="stat-value">ACTIVE</div>
+<div style="font-size:11px;color:#91a4bd;" id="sessionTimer">00:00</div>
+</div>
+
+<div class="stat">
+<div class="stat-label">DEVICE</div>
+<div class="stat-value">✓</div>
+<div style="font-size:11px;color:#91a4bd;">VERIFIED</div>
+</div>
+
+<div class="stat">
+<div class="stat-label">SECURITY</div>
+<div class="stat-value">AES-256</div>
+<div style="font-size:11px;color:#91a4bd;">AES-GCM DEMO</div>
+</div>
+
+</div>
+
+<div class="grid">
+
+<div class="card">
+
+<div class="card-title">
+<h3>Security Verification</h3>
+<span class="badge green">PROTECTED</span>
+</div>
+
+<div class="status-list">
+
+<div class="status-row">
+<span>Password Authentication</span>
+<span class="badge green">VERIFIED</span>
+</div>
+
+<div class="status-row">
+<span>Two-Factor Authentication</span>
+<span class="badge green">VERIFIED</span>
+</div>
+
+<div class="status-row">
+<span>Device Verification</span>
+<span class="badge green">VERIFIED</span>
+</div>
+
+<div class="status-row">
+<span>Role-Based Access</span>
+<span class="badge blue" id="roleStatus">EMPLOYEE</span>
+</div>
+
+<div class="status-row">
+<span>Encryption Layer</span>
+<span class="badge green">AES-256</span>
+</div>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<div class="card-title">
+<h3>Recent Activity</h3>
+</div>
+
+<div id="dashboardLogs"></div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- RESOURCES -->
+
+<div id="page-resources" class="page hidden">
+
+<h1 class="page-title">Office Resources</h1>
+
+<p class="page-subtitle">
+RBAC protected resources available through the simulated secure connection.
+</p>
+
+<div class="resource-grid">
+
+<div class="resource">
+<h4>📁 Office Files</h4>
+<p>Access shared office documents and project files.</p>
+<button onclick="accessResource('/office/files')">
+Access Resource
+</button>
+</div>
+
+<div class="resource">
+<h4>💬 Office Messages</h4>
+<p>Access internal secure office messaging.</p>
+<button onclick="accessResource('/office/messages')">
+Access Resource
+</button>
+</div>
+
+<div class="resource">
+<h4>🗄 Office Database</h4>
+<p>Simulated protected database resource.</p>
+<button onclick="accessResource('/office/database')">
+Access Resource
+</button>
+</div>
+
+<div class="resource" id="adminResource1">
+<h4>👥 User Management</h4>
+<p>Administrative user management console.</p>
+<button onclick="accessResource('/admin/users')">
+Admin Resource
+</button>
+</div>
+
+<div class="resource" id="adminResource2">
+<h4>📋 Security Logs</h4>
+<p>Review system activity and security events.</p>
+<button onclick="accessResource('/admin/logs')">
+Admin Resource
+</button>
+</div>
+
+<div class="resource" id="adminResource3">
+<h4>🟢 Session Monitor</h4>
+<p>Monitor active VPN-style connections.</p>
+<button onclick="accessResource('/admin/sessions')">
+Admin Resource
+</button>
+</div>
+
+</div>
+
+<div id="resourceMessage"></div>
+
+</div>
+
+
+<!-- ENCRYPTION -->
+
+<div id="page-encryption" class="page hidden">
+
+<h1 class="page-title">Secure Data Transmission</h1>
+
+<p class="page-subtitle">
+AES-256-GCM browser demonstration corresponding to the Java JCA
+EncryptionService.
+</p>
+
+<div class="card">
+
+<div class="form-group">
+<label>CONFIDENTIAL OFFICE DATA</label>
+<textarea id="plainText" class="input"
+placeholder="Enter confidential office message...">Confidential Office Message</textarea>
+</div>
+
+<button class="primary-btn" onclick="encryptData()" style="max-width:250px;">
+🔒 Encrypt & Transmit
+</button>
+
+<div style="margin-top:25px;" class="encryption-box">
+
+<div class="data-label">Original Data</div>
+<div class="data-value" id="originalData">Waiting...</div>
+
+<div class="data-label">AES-256-GCM Ciphertext</div>
+<div class="data-value" id="encryptedData">Waiting...</div>
+
+<div class="data-label">Decrypted Data</div>
+<div class="data-value" id="decryptedData">Waiting...</div>
+
+<div id="encryptionResult"></div>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<div class="card-title">
+<h3>Encryption Flow</h3>
+<span class="badge blue">JCA CONCEPT</span>
+</div>
+
+<div class="architecture">
+
+<div class="arch-box">Plaintext</div>
+<div class="arrow">→</div>
+<div class="arch-box">AES-256</div>
+<div class="arrow">→</div>
+<div class="arch-box">Encrypted Data</div>
+<div class="arrow">→</div>
+<div class="arch-box">VPN Server</div>
+<div class="arrow">→</div>
+<div class="arch-box">Decryption</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- SESSION -->
+
+<div id="page-session" class="page hidden">
+
+<h1 class="page-title">Session Management</h1>
+
+<p class="page-subtitle">
+Current authenticated VPN-style session.
+</p>
+
+<div class="card">
+
+<table>
+
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+
+<tr>
+<td>Session ID</td>
+<td id="sessionId"></td>
+</tr>
+
+<tr>
+<td>Username</td>
+<td id="sessionUser"></td>
+</tr>
+
+<tr>
+<td>Role</td>
+<td id="sessionRole"></td>
+</tr>
+
+<tr>
+<td>Device ID</td>
+<td id="sessionDevice"></td>
+</tr>
+
+<tr>
+<td>Login Time</td>
+<td id="loginTime"></td>
+</tr>
+
+<tr>
+<td>Last Activity</td>
+<td id="lastActivity"></td>
+</tr>
+
+<tr>
+<td>Status</td>
+<td><span class="badge green">ACTIVE</span></td>
+</tr>
+
+</table>
+
+</div>
+
+</div>
+
+
+<!-- USERS -->
+
+<div id="page-users" class="page hidden">
+
+<h1 class="page-title">User Management</h1>
+
+<p class="page-subtitle">
+Administrative view of registered office users and devices.
+</p>
+
+<div class="card">
+
+<table>
+
+<thead>
+<tr>
+<th>User</th>
+<th>Role</th>
+<th>Device</th>
+<th>Status</th>
+<th>Created</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td>sanjay</td>
+<td><span class="badge blue">EMPLOYEE</span></td>
+<td>DEV-SANJAY-01</td>
+<td><span class="badge green">ACTIVE</span></td>
+<td>2026-09-01</td>
+</tr>
+
+<tr>
+<td>praveen</td>
+<td><span class="badge blue">EMPLOYEE</span></td>
+<td>DEV-PRAVEEN-01</td>
+<td><span class="badge green">ACTIVE</span></td>
+<td>2026-09-02</td>
+</tr>
+
+<tr>
+<td>admin</td>
+<td><span class="badge yellow">ADMIN</span></td>
+<td>DEV-ADMIN-01</td>
+<td><span class="badge green">ACTIVE</span></td>
+<td>2026-09-01</td>
+</tr>
+
+<tr>
+<td>user03</td>
+<td><span class="badge blue">EMPLOYEE</span></td>
+<td>DEV-USER03-01</td>
+<td><span class="badge green">ACTIVE</span></td>
+<td>2026-09-05</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+
+<!-- SESSIONS -->
+
+<div id="page-sessions" class="page hidden">
+
+<h1 class="page-title">Active Sessions</h1>
+
+<p class="page-subtitle">
+Monitor active VPN-style remote-access sessions.
+</p>
+
+<div class="card">
+
+<table>
+
+<thead>
+<tr>
+<th>Session</th>
+<th>User</th>
+<th>Role</th>
+<th>Device</th>
+<th>Status</th>
+</tr>
+</thead>
+
+<tbody id="sessionTable">
+
+<tr>
+<td id="adminSessionId">SES-ADMIN</td>
+<td>admin</td>
+<td>ADMIN</td>
+<td>DEV-ADMIN-01</td>
+<td><span class="badge green">ACTIVE</span></td>
+</tr>
+
+<tr>
+<td>SES-1001</td>
+<td>sanjay</td>
+<td>EMPLOYEE</td>
+<td>DEV-SANJAY-01</td>
+<td><span class="badge green">ACTIVE</span></td>
+</tr>
+
+<tr>
+<td>SES-1002</td>
+<td>praveen</td>
+<td>EMPLOYEE</td>
+<td>DEV-PRAVEEN-01</td>
+<td><span class="badge green">ACTIVE</span></td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+
+<!-- LOGS -->
+
+<div id="page-logs" class="page hidden">
+
+<h1 class="page-title">Activity & Audit Logs</h1>
+
+<p class="page-subtitle">
+ActivityLogger events recorded during the secure session.
+</p>
+
+<div class="card">
+
+<div id="fullLogs"></div>
+
+</div>
+
+</div>
+
+
+<!-- SECURITY -->
+
+<div id="page-security" class="page hidden">
+
+<h1 class="page-title">Security Events</h1>
+
+<p class="page-subtitle">
+Security-related events and failed authentication attempts.
+</p>
+
+<div class="stats">
+
+<div class="stat">
+<div class="stat-label">FAILED LOGINS</div>
+<div class="stat-value">3</div>
+</div>
+
+<div class="stat">
+<div class="stat-label">SECURITY EVENTS</div>
+<div class="stat-value">5</div>
+</div>
+
+<div class="stat">
+<div class="stat-label">DEVICE FAILURES</div>
+<div class="stat-value">1</div>
+</div>
+
+<div class="stat">
+<div class="stat-label">SESSION TIMEOUTS</div>
+<div class="stat-value">2</div>
+</div>
+
+</div>
+
+<div class="card">
+
+<table>
+
+<thead>
+<tr>
+<th>Time</th>
+<th>User</th>
+<th>Event</th>
+<th>Status</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td>09:15:12</td>
+<td>user03</td>
+<td>INVALID_PASSWORD</td>
+<td><span class="badge red">FAILED</span></td>
+</tr>
+
+<tr>
+<td>09:17:44</td>
+<td>user03</td>
+<td>INVALID_OTP</td>
+<td><span class="badge red">FAILED</span></td>
+</tr>
+
+<tr>
+<td>09:20:11</td>
+<td>unknown</td>
+<td>DEVICE_VERIFICATION_FAILURE</td>
+<td><span class="badge red">BLOCKED</span></td>
+</tr>
+
+<tr>
+<td>09:30:22</td>
+<td>sanjay</td>
+<td>LOGIN_SUCCESS</td>
+<td><span class="badge green">SUCCESS</span></td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+
+<!-- ARCHITECTURE -->
+
+<div id="page-architecture" class="page hidden">
+
+<h1 class="page-title">System Architecture</h1>
+
+<p class="page-subtitle">
+SECURE OFFICE VPN — Java project architecture and implementation layers.
+</p>
+
+<div class="card">
+
+<div class="architecture">
+
+<div class="arch-box">User Input</div>
+<div class="arrow">→</div>
+<div class="arch-box">Authentication</div>
+<div class="arrow">→</div>
+<div class="arch-box">2FA</div>
+<div class="arrow">→</div>
+<div class="arch-box">Device Verification</div>
+<div class="arrow">→</div>
+<div class="arch-box">RBAC</div>
+<div class="arrow">→</div>
+<div class="arch-box">AES-256</div>
+<div class="arrow">→</div>
+<div class="arch-box">VPN Server<br>Simulation</div>
+<div class="arrow">→</div>
+<div class="arch-box">Resources</div>
+<div class="arrow">→</div>
+<div class="arch-box">Activity Logger</div>
+<div class="arrow">→</div>
+<div class="arch-box">MySQL</div>
+
+</div>
+
+</div>
+
+
+<div class="grid">
+
+<div class="card">
+
+<div class="card-title">
+<h3>OOP Concepts</h3>
+</div>
+
+<div class="status-list">
+
+<div class="status-row">
+<span>Encapsulation</span>
+<span class="badge green">User fields</span>
+</div>
+
+<div class="status-row">
+<span>Inheritance</span>
+<span class="badge blue">Admin extends User</span>
+</div>
+
+<div class="status-row">
+<span>Polymorphism</span>
+<span class="badge blue">checkAccess()</span>
+</div>
+
+<div class="status-row">
+<span>Abstraction</span>
+<span class="badge blue">Authenticator</span>
+</div>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<div class="card-title">
+<h3>Java Backend Components</h3>
+</div>
+
+<div class="status-list">
+
+<div class="status-row">
+<span>AuthenticationService</span>
+<span>✓</span>
+</div>
+
+<div class="status-row">
+<span>EncryptionService</span>
+<span>✓</span>
+</div>
+
+<div class="status-row">
+<span>VPNServer</span>
+<span>✓</span>
+</div>
+
+<div class="status-row">
+<span>ActivityLogger</span>
+<span>✓</span>
+</div>
+
+<div class="status-row">
+<span>JDBC Repositories</span>
+<span>✓</span>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<div class="card-title">
+<h3>Project Scope</h3>
+<span class="badge yellow">ACADEMIC SIMULATION</span>
+</div>
+
+<p style="color:#91a4bd;line-height:1.8;font-size:13px;">
+This application demonstrates the security and access-control layers
+that would sit in front of a real VPN tunnel. It is not a kernel-level
+VPN and does not implement OpenVPN, WireGuard, production network
+tunnelling, or large-scale VPN infrastructure.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div class="card-title">
+<h3>Reported Project Evaluation</h3>
+</div>
+
+<table>
+
+<thead>
+<tr>
+<th>Iteration</th>
+<th>Test Pass</th>
+<th>Coverage</th>
+<th>Avg Response</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td>Baseline</td>
+<td>78%</td>
+<td>52%</td>
+<td>~180 ms</td>
+</tr>
+
+<tr>
+<td>Refinement</td>
+<td>89%</td>
+<td>71%</td>
+<td>~210 ms</td>
+</tr>
+
+<tr>
+<td>Final</td>
+<td>96%</td>
+<td>85%</td>
+<td>~230 ms</td>
+</tr>
+
+</tbody>
+
+</table>
+
+<p style="margin-top:15px;color:#71859c;font-size:11px;">
+These are the evaluation values reported by the project report,
+not measurements performed by this browser demo.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div class="card-title">
+<h3>Future Scope</h3>
+</div>
+
+<div class="status-list">
+
+<div class="status-row">
+<span>Actual OpenVPN / WireGuard tunnel</span>
+<span>Future</span>
+</div>
+
+<div class="status-row">
+<span>Externalized database & cryptographic configuration</span>
+<span>Future</span>
+</div>
+
+<div class="status-row">
+<span>Concurrency & load testing</span>
+<span>Future</span>
+</div>
+
+<div class="status-row">
+<span>JavaFX / Web interface</span>
+<span>Future</span>
+</div>
+
+<div class="status-row">
+<span>Finer-grained permissions</span>
+<span>Future</span>
+</div>
+
+<div class="status-row">
+<span>Suspicious activity alerts</span>
+<span>Future</span>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</main>
+
+</section>
+
+
+<script>
+
+/* ============================================================
+   SECURE OFFICE VPN — BROWSER DEMONSTRATION
+   This simulates the Java application's presentation layer.
+============================================================ */
+
+let currentUser = null;
+let currentRole = null;
+let generatedOTP = null;
+let sessionStart = null;
+let sessionId = null;
+let deviceId = null;
+
+let activityLogs = [
+    {
+        user:"sanjay",
+        action:"LOGIN_SUCCESS",
+        time:"09:30:22",
+        status:"SUCCESS"
+    },
+    {
+        user:"sanjay",
+        action:"VPN_CONNECTED",
+        time:"09:31:02",
+        status:"SUCCESS"
+    },
+    {
+        user:"praveen",
+        action:"VPN_CONNECTED",
+        time:"09:31:10",
+        status:"SUCCESS"
+    },
+    {
+        user:"sanjay",
+        action:"RESOURCE_ACCESSED",
+        time:"09:31:15",
+        status:"SUCCESS"
+    },
+    {
+        user:"user03",
+        action:"LOGIN_FAILED",
+        time:"09:32:08",
+        status:"FAILED"
+    }
+];
+
+
+/* ============================================================
+   LOGIN
+============================================================ */
+
+function startAuthentication() {
+
+    const username =
+        document.getElementById("username").value.trim();
+
+    const password =
+        document.getElementById("password").value;
+
+    const message =
+        document.getElementById("loginMessage");
+
+    if (!username) {
+        showMessage(message,"Username cannot be empty.","error");
+        return;
+    }
+
+    if (!password) {
+        showMessage(message,"Password cannot be empty.","error");
+        return;
+    }
+
+    let valid = false;
+
+    if (username === "admin" && password === "Admin@123") {
+        currentRole = "ADMIN";
+        valid = true;
+    }
+
+    if (username === "sanjay" && password === "Sanjay@123") {
+        currentRole = "EMPLOYEE";
+        valid = true;
+    }
+
+    if (!valid) {
+
+        addLog(
+            username,
+            "LOGIN_FAILED",
+            "FAILED"
+        );
+
+        showMessage(
+            message,
+            "Invalid username or password.",
+            "error"
+        );
+
+        return;
+    }
+
+    currentUser = username;
+
+    generatedOTP =
+        Math.floor(100000 + Math.random() * 900000)
+        .toString();
+
+    deviceId =
+        currentUser === "admin"
+        ? "DEV-ADMIN-01"
+        : "DEV-SANJAY-01";
+
+    document.getElementById("generatedOtp")
+        .textContent = generatedOTP;
+
+    document.getElementById("credentialsPanel")
+        .classList.add("hidden");
+
+    document.getElementById("otpPanel")
+        .classList.remove("hidden");
+
+}
+
+
+/* ============================================================
+   OTP
+============================================================ */
+
+function verifyOTP() {
+
+    const entered =
+        document.getElementById("otpInput").value.trim();
+
+    const message =
+        document.getElementById("otpMessage");
+
+    if (entered !== generatedOTP) {
+
+        addLog(
+            currentUser,
+            "INVALID_OTP",
+            "FAILED"
+        );
+
+        showMessage(
+            message,
+            "Invalid OTP. Authentication denied.",
+            "error"
+        );
+
+        return;
+    }
+
+    document.getElementById("otpCheck")
+        .innerHTML =
+        "✓ OTP verified";
+
+    document.getElementById("otpCheck")
+        .classList.add("ok");
+
+    document.getElementById("deviceCheck")
+        .innerHTML =
+        "✓ Device verified";
+
+    document.getElementById("deviceCheck")
+        .classList.add("ok");
+
+    addLog(
+        currentUser,
+        "LOGIN_SUCCESS",
+        "SUCCESS"
+    );
+
+    addLog(
+        currentUser,
+        "VPN_CONNECTED",
+        "SUCCESS"
+    );
+
+    createSession();
+
+    setTimeout(() => {
+        document.getElementById("loginPage")
+            .classList.add("hidden");
+
+        document.getElementById("app")
+            .classList.remove("hidden");
+
+        initializeDashboard();
+
+    },500);
+
+}
+
+
+/* ============================================================
+   SESSION
+============================================================ */
+
+function createSession() {
+
+    sessionId =
+        "SES-" +
+        Math.floor(1000 + Math.random() * 9000);
+
+    sessionStart = new Date();
+
+}
+
+function initializeDashboard() {
+
+    document.getElementById("topUsername")
+        .textContent = currentUser;
+
+    document.getElementById("topRole")
+        .textContent = currentRole;
+
+    document.getElementById("avatar")
+        .textContent =
+        currentUser.charAt(0).toUpperCase();
+
+    document.getElementById("welcomeTitle")
+        .textContent =
+        "Welcome, " +
+        currentUser.charAt(0).toUpperCase() +
+        currentUser.slice(1);
+
+    document.getElementById("roleStatus")
+        .textContent = currentRole;
+
+    document.getElementById("sessionId")
+        .textContent = sessionId;
+
+    document.getElementById("sessionUser")
+        .textContent = currentUser;
+
+    document.getElementById("sessionRole")
+        .textContent = currentRole;
+
+    document.getElementById("sessionDevice")
+        .textContent = deviceId;
+
+    document.getElementById("loginTime")
+        .textContent = sessionStart.toLocaleTimeString();
+
+    document.getElementById("lastActivity")
+        .textContent = sessionStart.toLocaleTimeString();
+
+    if (currentRole !== "ADMIN") {
+
+        document.getElementById("adminNavigation")
+            .classList.add("hidden");
+
+        document.getElementById("adminResource1")
+            .classList.add("hidden");
+
+        document.getElementById("adminResource2")
+            .classList.add("hidden");
+
+        document.getElementById("adminResource3")
+            .classList.add("hidden");
+
+    } else {
+
+        document.getElementById("adminNavigation")
+            .classList.remove("hidden");
+
+        document.getElementById("adminResource1")
+            .classList.remove("hidden");
+
+        document.getElementById("adminResource2")
+            .classList.remove("hidden");
+
+        document.getElementById("adminResource3")
+            .classList.remove("hidden");
+
+    }
+
+    renderLogs();
+
+}
+
+
+/* ============================================================
+   PAGE NAVIGATION
+============================================================ */
+
+function showPage(page, button) {
+
+    document
+        .querySelectorAll(".page")
+        .forEach(p => p.classList.add("hidden"));
+
+    document
+        .getElementById("page-" + page)
+        .classList.remove("hidden");
+
+    document
+        .querySelectorAll(".nav-item")
+        .forEach(b => b.classList.remove("active"));
+
+    if (button)
+        button.classList.add("active");
+
+    if (page === "logs")
+        renderLogs();
+
+    if (page === "dashboard")
+        renderDashboardLogs();
+
+}
+
+
+/* ============================================================
+   RBAC
+============================================================ */
+
+function accessResource(resource) {
+
+    const message =
+        document.getElementById("resourceMessage");
+
+    if (!currentUser) {
+        showMessage(
+            message,
+            "Invalid session.",
+            "error"
+        );
+        return;
+    }
+
+    if (
+        resource.startsWith("/admin")
+        && currentRole !== "ADMIN"
+    ) {
+
+        addLog(
+            currentUser,
+            "UNAUTHORIZED_RESOURCE_ACCESS",
+            "FAILED"
+        );
+
+        showMessage(
+            message,
+            "Access denied. ADMIN role required.",
+            "error"
+        );
+
+        return;
+    }
+
+    addLog(
+        currentUser,
+        "RESOURCE_ACCESSED " + resource,
+        "SUCCESS"
+    );
+
+    showMessage(
+        message,
+        "✓ Access granted to " + resource,
+        "success"
+    );
+
+}
+
+
+/* ============================================================
+   LOGGING
+============================================================ */
+
+function addLog(user, action, status) {
+
+    const now = new Date();
+
+    activityLogs.unshift({
+
+        user:user,
+
+        action:action,
+
+        time:now.toLocaleTimeString(),
+
+        status:status
+
+    });
+
+    renderDashboardLogs();
+
+}
+
+function renderDashboardLogs() {
+
+    const container =
+        document.getElementById("dashboardLogs");
+
+    if (!container) return;
+
+    container.innerHTML =
+        activityLogs
+        .slice(0,5)
+        .map(log => {
+
+            return `
+            <div class="activity">
+
+                <div class="activity-left">
+
+                    <div class="activity-icon">
+                        ${log.status === "SUCCESS" ? "✓" : "!"}
+                    </div>
+
+                    <div>
+                        <div style="font-size:13px;">
+                            ${escapeHtml(log.user)}
+                        </div>
+
+                        <div style="font-size:11px;color:#71859c;">
+                            ${escapeHtml(log.action)}
+                        </div>
+                    </div>
+
+                </div>
+
+                <div>
+                    <span class="badge ${
+                        log.status === "SUCCESS"
+                        ? "green"
+                        : "red"
+                    }">
+                        ${log.status}
+                    </span>
+                </div>
+
+            </div>
+            `;
+
+        })
+        .join("");
+
+}
+
+function renderLogs() {
+
+    const container =
+        document.getElementById("fullLogs");
+
+    if (!container) return;
+
+    container.innerHTML =
+        activityLogs
+        .map(log => {
+
+            return `
+            <div class="activity">
+
+                <div class="activity-left">
+
+                    <div class="activity-icon">
+                        ${log.status === "SUCCESS" ? "✓" : "!"}
+                    </div>
+
+                    <div>
+
+                        <div style="font-size:13px;">
+                            ${escapeHtml(log.user)}
+                        </div>
+
+                        <div style="font-size:11px;color:#71859c;">
+                            ${escapeHtml(log.action)}
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div style="text-align:right;">
+
+                    <div style="font-size:10px;color:#71859c;">
+                        ${escapeHtml(log.time)}
+                    </div>
+
+                    <span class="badge ${
+                        log.status === "SUCCESS"
+                        ? "green"
+                        : "red"
+                    }">
+                        ${log.status}
+                    </span>
+
+                </div>
+
+            </div>
+            `;
+
+        })
+        .join("");
+
+}
+
+
+/* ============================================================
+   AES-256-GCM DEMONSTRATION
+============================================================ */
+
+async function encryptData() {
+
+    const text =
+        document.getElementById("plainText").value;
+
+    if (!text.trim()) {
+
+        document.getElementById("encryptionResult")
+            .innerHTML =
+            `<div class="message error">
+            Data cannot be empty.
+            </div>`;
+
+        return;
+
+    }
+
+    try {
+
+        const encoder =
+            new TextEncoder();
+
+        const data =
+            encoder.encode(text);
+
+        /*
+         * Browser demonstration of AES-256-GCM.
+         * The actual Java project should use:
+         *
+         * KeyGenerator.getInstance("AES")
+         * keyGen.init(256)
+         *
+         * and Java JCA Cipher.
+         */
+
+        const key =
+            await crypto.subtle.generateKey(
+                {
+                    name:"AES-GCM",
+                    length:256
+                },
+                true,
+                ["encrypt","decrypt"]
+            );
+
+        const iv =
+            crypto.getRandomValues(
+                new Uint8Array(12)
+            );
+
+        const encrypted =
+            await crypto.subtle.encrypt(
+                {
+                    name:"AES-GCM",
+                    iv:iv
+                },
+                key,
+                data
+            );
+
+        const decrypted =
+            await crypto.subtle.decrypt(
+                {
+                    name:"AES-GCM",
+                    iv:iv
+                },
+                key,
+                encrypted
+            );
+
+        const encryptedBytes =
+            new Uint8Array(encrypted);
+
+        const decryptedText =
+            new TextDecoder().decode(decrypted);
+
+        document.getElementById("originalData")
+            .textContent = text;
+
+        document.getElementById("encryptedData")
+            .textContent =
+            "IV: " +
+            bytesToHex(iv) +
+            " | Ciphertext: " +
+            bytesToHex(encryptedBytes);
+
+        document.getElementById("decryptedData")
+            .textContent = decryptedText;
+
+        document.getElementById("encryptionResult")
+            .innerHTML =
+            `<div class="message success">
+            ✓ AES-256-GCM encryption successful<br>
+            ✓ Ciphertext generated<br>
+            ✓ Decryption successful<br>
+            ✓ Original data matches decrypted data
+            </div>`;
+
+        addLog(
+            currentUser,
+            "AES_256_DATA_TRANSMITTED",
+            "SUCCESS"
+        );
+
+    } catch(error) {
+
+        document.getElementById("encryptionResult")
+            .innerHTML =
+            `<div class="message error">
+            Encryption error.
+            </div>`;
+
+        addLog(
+            currentUser,
+            "ENCRYPTION_ERROR",
+            "FAILED"
+        );
+
+    }
+
+}
+
+
+function bytesToHex(bytes) {
+
+    return Array.from(bytes)
+        .map(b => b.toString(16).padStart(2,"0"))
+        .join("");
+
+}
+
+
+/* ============================================================
+   SESSION TIMER
+============================================================ */
+
+setInterval(() => {
+
+    if (!sessionStart)
+        return;
+
+    const seconds =
+        Math.floor(
+            (Date.now() - sessionStart.getTime()) / 1000
+        );
+
+    const minutes =
+        Math.floor(seconds / 60);
+
+    const remaining =
+        seconds % 60;
+
+    const timer =
+        document.getElementById("sessionTimer");
+
+    if (timer) {
+
+        timer.textContent =
+            String(minutes).padStart(2,"0") +
+            ":" +
+            String(remaining).padStart(2,"0");
+
+    }
+
+    const last =
+        document.getElementById("lastActivity");
+
+    if (last)
+        last.textContent =
+            new Date().toLocaleTimeString();
+
+},1000);
+
+
+/* ============================================================
+   LOGOUT
+============================================================ */
+
+function logout() {
+
+    if (currentUser) {
+
+        addLog(
+            currentUser,
+            "VPN_DISCONNECTED",
+            "SUCCESS"
+        );
+
+        addLog(
+            currentUser,
+            "LOGOUT",
+            "SUCCESS"
+        );
+
+    }
+
+    currentUser = null;
+    currentRole = null;
+    generatedOTP = null;
+    sessionStart = null;
+    sessionId = null;
+    deviceId = null;
+
+    document.getElementById("app")
+        .classList.add("hidden");
+
+    document.getElementById("loginPage")
+        .classList.remove("hidden");
+
+    document.getElementById("otpPanel")
+        .classList.add("hidden");
+
+    document.getElementById("credentialsPanel")
+        .classList.remove("hidden");
+
+    document.getElementById("username").value = "";
+    document.getElementById("password").value = "";
+    document.getElementById("otpInput").value = "";
+
+}
+
+
+/* ============================================================
+   HELPERS
+============================================================ */
+
+function showMessage(element, text, type) {
+
+    element.innerHTML =
+        `<div class="message ${type}">
+        ${escapeHtml(text)}
+        </div>`;
+
+}
+
+function escapeHtml(text) {
+
+    return String(text)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+
+}
+
+</script>
+
+</body>
+</html>
